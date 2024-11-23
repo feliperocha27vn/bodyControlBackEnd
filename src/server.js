@@ -1,14 +1,22 @@
+import express from "express";
 import { PrismaClient } from "@prisma/client";
-import createUser from "./createUser.js";
+import User from "./User.js";
 
+const app = express();
 const prisma = new PrismaClient();
+const port = 3333;
 
-async function main() {
+app.get("/users", async (req, res) => {
   const allUsers = await prisma.user.findMany();
+  res.send(allUsers);
+});
 
-//   createUser();
+app.post("/users", (req, res) => {
+  const novoUser = new User();
+  novoUser.createUser();
+  res.send("O novo usuário foi criado com sucesso!");
+});
 
-  console.log(allUsers);
-}
-
-main();
+app.listen(port, () => {
+  console.log(`Server rodando no endereço localhost:${port}`);
+});

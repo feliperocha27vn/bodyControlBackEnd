@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node src/server.js"
+    "dev": "node --watch src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "express": "^4.21.1",
     "prisma": "^5.22.0"
   }
 }

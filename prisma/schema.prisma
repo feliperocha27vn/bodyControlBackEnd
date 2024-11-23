@@ -14,5 +14,5 @@ model User {
   idade  Int
   altura Float
   tmb    Float? 
-  genero Float  
+  genero String  
 }
