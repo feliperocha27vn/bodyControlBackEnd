@@ -7,12 +7,17 @@ export default class User {
     this.peso = peso;
     this.idade = idade;
     this.altura = altura;
-    this.genero = genero;
+    this.genero = genero.toLowerCase();
   }
 
   async createUser() {
-    const tmb =
-      66 + (13, 7 * this.peso) + 5 * this.altura - (6, 8 * this.idade);
+    let tmb;
+
+    if (this.genero === "feminino") {
+      tmb = 655 + 9.6 * this.peso + 1.8 * this.altura - 4.7 * this.idade;
+    } else {
+      tmb = 66 + 13.7 * this.peso + 5 * this.altura - 6.8 * this.idade;
+    }
 
     this.tmb = parseFloat(tmb.toFixed(0));
 

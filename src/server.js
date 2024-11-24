@@ -6,15 +6,25 @@ const app = express();
 const prisma = new PrismaClient();
 const port = 3333;
 
+app.use(express.json());
+
 app.get("/users", async (req, res) => {
   const allUsers = await prisma.user.findMany();
   res.send(allUsers);
 });
 
-app.post("/users", (req, res) => {
-  const novoUser = new User();
-  novoUser.createUser();
-  res.send("O novo usuário foi criado com sucesso!");
+app.post("/register", (req, res) => {
+  const { nome, peso, idade, altura, genero } = req.body;
+  const userData = { nome, peso, idade, altura, genero };
+
+  for (const key in userData) {
+    if (!userData[key]) {
+      res.writeHead(400).end(`O campo ${key.toUpperCase()} é obrigatório!`)
+    }
+  }
+  const newUser = new User(nome, peso, idade, altura, genero);
+  newUser.createUser();
+  res.writeHead(201).end();
 });
 
 app.listen(port, () => {
