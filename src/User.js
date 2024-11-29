@@ -7,13 +7,13 @@ export default class User {
     this.peso = peso;
     this.idade = idade;
     this.altura = altura;
-    this.genero = genero.toLowerCase();
+    this.genero = genero;
   }
 
-  async createUser() {
+  async calculateTMB() {
     let tmb;
-    
-    //calculo tmb  
+
+    //calculo tmb
     if (this.genero === "feminino") {
       tmb = 655 + 9.6 * this.peso + 1.8 * this.altura - 4.7 * this.idade;
     } else {
@@ -22,8 +22,10 @@ export default class User {
 
     // transformando o resultado em float
     this.tmb = parseFloat(tmb.toFixed(0));
+  }
 
-    // criando o novo usuario no bando 
+  async createUser() {
+    // criando o novo usuario no bando
     await prisma.user.create({
       data: {
         nome: this.nome,

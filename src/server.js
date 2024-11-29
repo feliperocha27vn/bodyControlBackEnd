@@ -27,16 +27,40 @@ app.post("/users", (req, res) => {
 
   // criando um novo usuario
   const newUser = new User(nome, peso, idade, altura, genero);
+  newUser.calculateTMB();
   newUser.createUser();
   res.writeHead(201).end();
 });
 
-app.put("/users/user:id", (req, res) => {
-  const userId = parseInt(req.params.id);
+app.patch("/users/:id", async (req, res) => {
+  // RECEBENDO O ID DO USER
+  const { id } = req.params;
+  // DADOS DA REQUISIÇÃO
+  let userData = req.body;
 
-  const userData = req.body;
+  const user = new User(
+    userData.nome,
+    userData.peso,
+    userData.idade,
+    userData.altura,
+    userData.genero
+  );
 
-  const {} = req.body;
+  if (userData.peso) user.peso = userData.peso;
+  if (userData.altura) user.altura = userData.altura;
+
+  if (userData.peso || userData.altura){
+    await user.calculateTMB();
+    userData.tmb = user.tmb;
+  }
+
+
+  const userUpdated = await prisma.user.update({
+    where: { id: parseInt(id) },
+    data: userData,
+  });
+
+  res.json(userUpdated);
 });
 
 // listando a porta do servidor
